@@ -3,15 +3,15 @@
 
 	<head>
 		
-<title>How to use git-格格巫</title>
+<title>Laravel 公共模块数据单独渲染-格格巫</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" type="image/x-icon" href="/image/favicon-wu.ico">
 
 
-<meta name="keywords" content="git,how-to-use,">
-<meta name="description" content="如何正确使用Git">
+<meta name="keywords" content="php,laravel,">
+<meta name="description" content="Laravel 公共模块数据单独渲染">
 
 
 <script src="/js/jquery.min.js"></script>
@@ -245,13 +245,13 @@
         <ul class="tag">
             
             
-            <li><a href="/tags/git">git</a></li>
+            <li><a href="/tags/php">php</a></li>
             
-            <li><a href="/tags/how-to-use">how-to-use</a></li>
+            <li><a href="/tags/laravel">laravel</a></li>
             
             
         </ul>
-        <h1>How to use git</h1>
+        <h1>Laravel 公共模块数据单独渲染</h1>
         <div class="article-info">
             <div class="article-author">
                 
@@ -264,14 +264,31 @@
                 </svg>
                 
                 <span> <a href="">gargamel</a></span>
-                <p>2021-01-21 15:29:56</p>
+                <p>2021-01-22 12:35:03</p>
             </div>
         </div>
     </div>
 </div>
 <div class="article-content">
     <div id="article" class="content">
-        <figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">cd project <span class="hljs-comment"># 切换到存放代码的目录</span><br><br>git init <span class="hljs-comment"># 初始化</span><br>git remote add origin https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/xxxx/</span>xxxx.git <span class="hljs-comment"># 远程仓库</span><br><br>git branch  -a <span class="hljs-comment"># 查看所有分支</span><br>git checkout -b xxx <span class="hljs-comment"># 创建并切换本地分支 xxx</span><br><br>git status <span class="hljs-comment"># 查看状态</span><br>git add *<br>git commit -m <span class="hljs-string">&quot;xxx&quot;</span><br>git push origin xxx <span class="hljs-comment"># 将本地分支代码推送到远程分支</span><br></code></pre></td></tr></table></figure>
+        <blockquote>
+<p>在项目中，我们会碰到很多类似菜单栏、热门商品、最新消息等等之类的公共的模块，在数据渲染的时候，如果我们每次引入公共模块的时候都分别引入与模块相关的数据的话，未免太麻烦了。</p>
+<p>接下来，我就来说下如何为公共模块单独绑定数据</p>
+</blockquote>
+<ul>
+<li><p>新建公共模块页面 <code>resources/views/widgets/demo.blade.php</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">&lt;div&gt;<br>&#123;&#123;<span class="hljs-variable">$common</span>&#125;&#125;<br>&lt;/div&gt;<br></code></pre></td></tr></table></figure></li>
+<li><p>新建文件夹 <code>app/Http/ViewCompoers</code>, 然后创建 <code>DemoComposer.php</code>:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">ViewComposers</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">View</span>\<span class="hljs-title">View</span>;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoComposer</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params">Model <span class="hljs-variable">$model</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">// 此处可以初始化 model 或者 repository</span><br>        <span class="hljs-keyword">$this</span>-&gt;model = <span class="hljs-variable">$model</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compose</span>(<span class="hljs-params">View <span class="hljs-variable">$view</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">// 此处获取数据</span><br>        <span class="hljs-variable">$common</span> = <span class="hljs-string">&#x27;this is common demo data&#x27;</span>;<br><br>        <span class="hljs-comment">// 需要渲染的数据</span><br>        <span class="hljs-variable">$view</span>-&gt;with(<span class="hljs-string">&#x27;common&#x27;</span>, <span class="hljs-variable">$common</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>新建一个新的服务提供者 <code>ComposerServiceProvider</code></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">php artisan make:provider ComposerServiceProvider<br></code></pre></td></tr></table></figure>
+<p>编辑：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Providers</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">ServiceProvider</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">View</span>;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ComposerServiceProvider</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ServiceProvider</span></span><br><span class="hljs-class"></span>&#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">boot</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">// 组件数据绑定组件视图文件</span><br>        View::composer(<span class="hljs-string">&#x27;widgets.demo&#x27;</span>, <span class="hljs-string">&#x27;App\Http\ViewComposers\DemoComposer&#x27;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">register</span>(<span class="hljs-params"></span>)</span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>ok! 完成~~~ 🌤 ☁ 🌈</p>
+</blockquote>
 
     </div>
 </div>
@@ -301,14 +318,14 @@
 </script>
 <div class="Last-Next">
     
-    <a href="/2021/01/21/laravel-multi-user-login/">
-        <div class="last">
-            <span>上一篇</span>
-            <p>Laravel 多用户登录</p>
+
+    
+    <a href="/2021/01/22/docker-domestic-image-acceleration/">
+        <div class="next">
+            <span>下一篇</span>
+            <p>🐋Docker 国内镜像加速</p>
         </div>
     </a>
-    
-
     
 </div>
 		

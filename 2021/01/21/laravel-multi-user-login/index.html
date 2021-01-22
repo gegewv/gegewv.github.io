@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		
+<title>Laravel 多用户登录-格格巫</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/image/favicon-wu.ico">
+
+
+<meta name="keywords" content="php,laravel,">
+<meta name="description" content="Laravel 多用户登录">
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+	<meta name="generator" content="Hexo 5.3.0"></head>
+
+	<body>
+		
+<link rel="stylesheet" href="/css/page.css">
+
+
+<link rel="stylesheet" href="/css/page_cente.css">
+
+
+<link rel="stylesheet" href="/css/atom-one-dark.css">
+
+
+<link rel="stylesheet" href="/css/header.css">
+
+	<div class="header">
+		<div class="header-top">
+			<div class="h-left">
+				<a href="/">
+					<img src="/image/logo-wu.png" alt="Quiet">
+				</a>
+			</div>
+			<div class="h-right">
+				<ul>
+					
+						
+								<li>
+									<a href="/">
+										首页
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/archives">
+										归档
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/categories">
+										分类
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/tags">
+										标签
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/links">
+										友链
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+						
+								<li>
+									<a href="/about">
+										关于
+									</a>
+									<span class="dot"></span>
+								</li>
+								
+									
+				</ul>
+			</div>
+			<div class="h-right-close">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+					<path fill="none" d="M0 0h24v24H0z" />
+					<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+				</svg>
+			</div>
+		</div>
+	</div>
+	<div class="sidebar">
+    <div class="topo">
+        <h2>gargamel</h2>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <a href="/links">友链</a>
+        </li>
+        
+        <li>
+            <a href="/about">关于</a>
+        </li>
+        
+    </ul>
+    <div class="my_foot">
+        
+        <a target="_blank" rel="noopener" href="https://github.com/gegewv">
+            <img src="https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png" alt="Quiet主题">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'
+    style='cursor: pointer;display: none; position: fixed;left: 0;top: 0; right: 0;bottom: 0;background-color: #333;opacity:0.5;z-index: 108;'>
+</div>
+<style>
+    .sidebar {
+        width: 0;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: 999;
+        text-align: center;
+        box-shadow: -6px 0 20px rgba(98, 94, 94, .815)
+    }
+
+    .topo {
+        width: 100%;
+        height: 200px;
+        background: url(https://api.ixiaowai.cn/gqapi/gqapi.php) no-repeat;
+        background-size: 100% 100%;
+        position: relative;
+        display: flex;
+        align-items: flex-end
+    }
+
+    .topo h2 {
+        color: #fff;
+        z-index: 1;
+        position: relative;
+        margin: 0 0 10px 10px;
+        font-size: 1.2em;
+        box-sizing: border-box
+    }
+
+    .topo:before {
+        content: '';
+        background-image: url(/image/pattern.png);
+        background-repeat: repeat;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 1
+    }
+
+    .sidebar ul {
+        width: 100%;
+        margin-top: 50px
+    }
+
+    .sidebar ul li {
+        height: 50px;
+        list-style: none;
+        font-size: 1.2em;
+        text-align: right;
+        margin-right: 10px
+    }
+
+    .sidebar ul li a {
+        display: grid;
+        color: #5d606a;
+        text-overflow: ellipsis;
+        width: 100%;
+        text-decoration: none
+    }
+
+    .my_foot {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        position: absolute;
+        bottom: 0
+    }
+
+    .my_foot a {
+        text-decoration: none;
+        margin-right: 10px;
+        display: inline-block
+    }
+
+    .my_foot a img {
+        width: 30px;
+        height: 30px
+    }
+</style>
+
+<script>
+    $(function () { $('.h-right-close>svg').click(function () { $('.sidebar').animate({ width: "66%" }, 500); $('.shelter').fadeIn("slow") }); $('.shelter').click(function (e) { $('.sidebar').animate({ width: "0" }, 500); $('.shelter').fadeOut("slow") }) })
+</script>
+		<script>
+			$(function () { $(window).scroll(function () { if ($(document).scrollTop() > 100) { $(".header-top").removeClass("header-move2"); $('.header-top').addClass('header-move1') } else { $(".header-top").removeClass("header-move1"); $('.header-top').addClass('header-move2') } }) });
+		</script>
+<div class="header-bg ">
+    <div class="bg-content">
+        <ul class="tag">
+            
+            
+            <li><a href="/tags/php">php</a></li>
+            
+            <li><a href="/tags/laravel">laravel</a></li>
+            
+            
+        </ul>
+        <h1>Laravel 多用户登录</h1>
+        <div class="article-info">
+            <div class="article-author">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                    <g>
+                        <path fill="#12183A"
+                            d="M6.187 15.265A6.47 6.47 0 0 0 10 16.5a6.47 6.47 0 0 0 3.813-1.235A4.99 4.99 0 0 0 10 13.5a4.99 4.99 0 0 0-3.813 1.765zM5.082 14.25A6.485 6.485 0 0 1 10 12c1.965 0 3.726.872 4.918 2.25a6.5 6.5 0 1 0-9.836 0zM10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z">
+                        </path>
+                    </g>
+                </svg>
+                
+                <span> <a href="">gargamel</a></span>
+                <p>2021-01-21 15:39:56</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="article-content">
+    <div id="article" class="content">
+        <blockquote>
+<p>下面以 <code>Laravel 6.*</code> 为例，其他版本的方法应该类似，自个琢磨去吧</p>
+</blockquote>
+<p>因为 <code>laravel 6.*</code> 去掉了 <code>php artisan make:auth</code> 所以我们先把 <code>laravel/ui</code> 安装下</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">php artisan migrate<br>// laravel/ui 2 不支持 laravel6.* ，所以我们要指定版本安装<br>composer require laravel/ui:^1.0 --dev<br>// 例子不适用vue或者react, 所以我们只安装bootstrap<br>php artisan ui bootstrap --auth<br><br>npm install &amp;&amp; npm run dev<br></code></pre></td></tr></table></figure>
+<p>好了，现在最基本的用户登录已经设置好了。接下来我们在增加一个 <code>admin</code> 入口：</p>
+<ul>
+<li>创建一个Admin模型</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">php artisan make:model Admin -m<br></code></pre></td></tr></table></figure>
+<ul>
+<li>编写admins表字段</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">Schema::create(<span class="hljs-string">&#x27;admins&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">Blueprint <span class="hljs-variable">$table</span></span>) </span>&#123;<br>    <span class="hljs-variable">$table</span>-&gt;increments(<span class="hljs-string">&#x27;id&#x27;</span>);<br>    <span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">&#x27;name&#x27;</span>)-&gt;unique();<br>    <span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">&#x27;password&#x27;</span>);<br>    <span class="hljs-variable">$table</span>-&gt;rememberToken();<br>    <span class="hljs-variable">$table</span>-&gt;timestamps();<br>&#125;);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>编辑admin模型</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Foundation</span>\<span class="hljs-title">Auth</span>\<span class="hljs-title">User</span> <span class="hljs-title">as</span> <span class="hljs-title">Authenticatable</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Notifications</span>\<span class="hljs-title">Notifiable</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Admin</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Authenticatable</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">use</span> <span class="hljs-title">Notifiable</span>;<br><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$fillable</span> = [<br>        <span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;email&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>,<br>    ];<br><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$hidden</span> = [<br>        <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-string">&#x27;remember_token&#x27;</span>,<br>    ];<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>修改config/auth.php配置文件</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-string">&#x27;guards&#x27;</span> =&gt; [<br>    ...<br>    <span class="hljs-string">&#x27;admin&#x27;</span> =&gt; [<br>        <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;session&#x27;</span>,<br>        <span class="hljs-string">&#x27;provider&#x27;</span> =&gt; <span class="hljs-string">&#x27;admins&#x27;</span><br>    ]<br>],<br><br><span class="hljs-string">&#x27;providers&#x27;</span> =&gt; [<br>    ...<br>    <span class="hljs-string">&#x27;admins&#x27;</span> =&gt; [<br>        <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;eloquent&#x27;</span>,<br>        <span class="hljs-string">&#x27;model&#x27;</span> =&gt; App\Admin::class,<br>    ]<br>],<br></code></pre></td></tr></table></figure>
+<ul>
+<li>创建admin登录后的首页控制器</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">php artisan make:controller Admin/HomeController<br></code></pre></td></tr></table></figure>
+<p>编辑 <code>HomeController</code>:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Admin</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Controller</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Request</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;middleware(<span class="hljs-string">&#x27;auth:admin&#x27;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> view(<span class="hljs-string">&#x27;admin.home&#x27;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>创建admin登录控制器</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">php artisan make:controller Admin\Auth\LoginController<br></code></pre></td></tr></table></figure>
+<p>编辑 <code>LoginController</code>:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Admin</span>\<span class="hljs-title">Auth</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Controller</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Requests</span>\<span class="hljs-title">AdminLoginRequest</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">Auth</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LoginController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showLoginForm</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> view(<span class="hljs-string">&#x27;admin.auth.login&#x27;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">postLogin</span>(<span class="hljs-params">AdminLoginRequest <span class="hljs-variable">$loginRequest</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$data</span> = <span class="hljs-variable">$loginRequest</span>-&gt;only(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>);<br>        <span class="hljs-variable">$result</span> = Auth::guard(<span class="hljs-string">&#x27;admin&#x27;</span>)-&gt;attempt(<span class="hljs-variable">$data</span>, <span class="hljs-literal">true</span>);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$result</span>) &#123;<br>            <span class="hljs-keyword">return</span> redirect(route(<span class="hljs-string">&#x27;admin.home&#x27;</span>));<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">return</span> redirect()-&gt;back()<br>                -&gt;with(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-variable">$loginRequest</span>-&gt;get(<span class="hljs-string">&#x27;name&#x27;</span>))<br>                -&gt;withErrors([<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;用户名或密码错误&#x27;</span>]);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">postLogout</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        Auth::guard(<span class="hljs-string">&#x27;admin&#x27;</span>)-&gt;logout();<br>        <span class="hljs-keyword">return</span> redirect(route(<span class="hljs-string">&#x27;admin.login.show&#x27;</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>添加 <code>admin</code> 路由文件, 修改 <code>app/providers/RouteServiceProvider.php</code>:</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 添加方法</span><br><span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mapAdminWebRoutes</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span>&#123;<br>    Route::middleware(<span class="hljs-string">&#x27;web&#x27;</span>)<br>        -&gt;prefix(<span class="hljs-string">&#x27;admin&#x27;</span>)<br>        -&gt;namespace(<span class="hljs-keyword">$this</span>-&gt;namespace)<br>        -&gt;group(base_path(<span class="hljs-string">&#x27;routes/admin.php&#x27;</span>));<br>&#125;<br><br><span class="hljs-comment">// 修改方法</span><br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">map</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">$this</span>-&gt;mapApiRoutes();<br><br>    <span class="hljs-keyword">$this</span>-&gt;mapAdminWebRoutes();<span class="hljs-comment">//调用新增的方法</span><br><br>    <span class="hljs-keyword">$this</span>-&gt;mapWebRoutes();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>新建并编辑 <code>/routes/admin.php</code> 文件:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>Route::get(<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;Admin\Auth\LoginController@showLoginForm&#x27;</span>)<br>    -&gt;middleware(<span class="hljs-string">&#x27;guest:admin&#x27;</span>)<br>    -&gt;name(<span class="hljs-string">&#x27;admin.login.show&#x27;</span>);<br><br>Route::get(<span class="hljs-string">&#x27;/&#x27;</span>,<span class="hljs-string">&#x27;Admin\HomeController@index&#x27;</span>)<br>    -&gt;name(<span class="hljs-string">&#x27;admin.home&#x27;</span>);<br><br>Route::post(<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;Admin\Auth\LoginController@postLogin&#x27;</span>)<br>    -&gt;middleware(<span class="hljs-string">&#x27;guest:admin&#x27;</span>)<br>    -&gt;name(<span class="hljs-string">&#x27;admin.login.post&#x27;</span>);<br><br>Route::post(<span class="hljs-string">&#x27;logout&#x27;</span>,<span class="hljs-string">&#x27;Admin\Auth\LoginController@postLogout&#x27;</span>)<br>    -&gt;middleware(<span class="hljs-string">&#x27;auth:admin&#x27;</span>)<br>    -&gt;name(<span class="hljs-string">&#x27;admin.logout&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>新建视图：</li>
+</ul>
+<p>把 <code>home.blade.php</code> 复制到 <code>resources/views/admin</code> 下把 <code>layouts/app.blade.php</code> 复制为 <code>layouts/admin.blade.php</code>，修改相应的地方</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">&lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;<br>    &lt;!-- Authentication Links --&gt;<br>    @guest(<span class="hljs-string">&#x27;admin&#x27;</span>)<br>        &lt;li&gt;&lt;a href=<span class="hljs-string">&quot;&#123;&#123; route(&#x27;admin.login.show&#x27;) &#125;&#125;&quot;</span>&gt;admin Login&lt;/a&gt;&lt;/li&gt;<br>    @<span class="hljs-keyword">else</span><br>    &lt;li class=&quot;dropdown&quot;&gt;<br>        &lt;a href=&quot;#&quot; class=&quot;dropdown-toggle&quot; data-toggle=&quot;dropdown&quot; role=&quot;button&quot; aria-expanded=&quot;false&quot; aria-haspopup=&quot;true&quot;&gt;<br>            &#123;&#123; Auth::guard(&#x27;admin&#x27;)-&gt;user()-&gt;name &#125;&#125; &lt;span class=&quot;caret&quot;&gt;&lt;/span&gt;<br>        &lt;/a&gt;<br><br>        &lt;ul class=&quot;dropdown-menu&quot;&gt;<br>            &lt;li&gt;<br>                &lt;a href=<span class="hljs-string">&quot;&#123;&#123; route(&#x27;admin.logout&#x27;) &#125;&#125;&quot;</span><br>                    onclick=<span class="hljs-string">&quot;event.preventDefault();</span><br><span class="hljs-string">                    document.getElementById(&#x27;logout-form&#x27;).submit();&quot;</span>&gt;<br>                    Logout<br>                &lt;/a&gt;<br><br>                &lt;form id=<span class="hljs-string">&quot;logout-form&quot;</span> action=<span class="hljs-string">&quot;&#123;&#123; route(&#x27;admin.logout&#x27;) &#125;&#125;&quot;</span> method=<span class="hljs-string">&quot;POST&quot;</span> style=<span class="hljs-string">&quot;display: none;&quot;</span>&gt;<br>                    &#123;&#123; csrf_field() &#125;&#125;<br>                &lt;/form&gt;<br>            &lt;/li&gt;<br>        &lt;/ul&gt;<br>    &lt;/li&gt;<br>    @endguest<br>&lt;/ul&gt;<br></code></pre></td></tr></table></figure>
+<p>把login.blade.php复制到admin/Auth目录下</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">@<span class="hljs-keyword">extends</span>(<span class="hljs-string">&#x27;layouts.admin&#x27;</span>)<br><br>@section(<span class="hljs-string">&#x27;content&#x27;</span>)<br>    &lt;div class=&quot;container&quot;&gt;<br>        &lt;div class=&quot;row&quot;&gt;<br>            &lt;div class=&quot;col-md-8 col-md-offset-2&quot;&gt;<br>                &lt;div class=&quot;panel panel-default&quot;&gt;<br>                    &lt;div class=&quot;panel-heading&quot;&gt;Admin Login&lt;/div&gt;<br><br>                    &lt;div class=&quot;panel-body&quot;&gt;<br>                        &lt;form class=&quot;form-horizontal&quot; method=&quot;POST&quot; action=&quot;&#123;&#123; route(&#x27;admin.login.post&#x27;) &#125;&#125;&quot;&gt;<br>                            &#123;&#123; csrf_field() &#125;&#125;<br><br>                            &lt;div class=&quot;form-group&#123;&#123; $errors-&gt;has(&#x27;name&#x27;) ? &#x27; has-error&#x27; : &#x27;&#x27; &#125;&#125;&quot;&gt;<br>                                &lt;label for=&quot;name&quot; class=&quot;col-md-4 control-label&quot;&gt;E-Mail Address&lt;/label&gt;<br><br>                                &lt;div class=&quot;col-md-6&quot;&gt;<br>                                    &lt;input id=&quot;name&quot; type=&quot;text&quot; class=&quot;form-control&quot; name=&quot;name&quot;<br>                                           value=<span class="hljs-string">&quot;&#123;&#123; old(&#x27;name&#x27;) &#125;&#125;&quot;</span> required autofocus&gt;<br><br>                                    @<span class="hljs-keyword">if</span> (<span class="hljs-variable">$errors</span>-&gt;has(<span class="hljs-string">&#x27;name&#x27;</span>))<br>                                        &lt;span class=&quot;help-block&quot;&gt;<br>                                        &lt;strong&gt;&#123;&#123; <span class="hljs-variable">$errors</span>-&gt;first(<span class="hljs-string">&#x27;name&#x27;</span>) &#125;&#125;&lt;/strong&gt;<br>                                    &lt;/span&gt;<br>                                    @<span class="hljs-keyword">endif</span><br>                                &lt;/div&gt;<br>                            &lt;/div&gt;<br><br>                            &lt;div class=&quot;form-group&#123;&#123; $errors-&gt;has(&#x27;password&#x27;) ? &#x27; has-error&#x27; : &#x27;&#x27; &#125;&#125;&quot;&gt;<br>                                &lt;label for=&quot;password&quot; class=&quot;col-md-4 control-label&quot;&gt;Password&lt;/label&gt;<br><br>                                &lt;div class=&quot;col-md-6&quot;&gt;<br>                                    &lt;input id=&quot;password&quot; type=&quot;password&quot; class=&quot;form-control&quot; name=&quot;password&quot; required&gt;<br><br>                                    @<span class="hljs-keyword">if</span> (<span class="hljs-variable">$errors</span>-&gt;has(<span class="hljs-string">&#x27;password&#x27;</span>))<br>                                        &lt;span class=&quot;help-block&quot;&gt;<br>                                        &lt;strong&gt;&#123;&#123; <span class="hljs-variable">$errors</span>-&gt;first(<span class="hljs-string">&#x27;password&#x27;</span>) &#125;&#125;&lt;/strong&gt;<br>                                    &lt;/span&gt;<br>                                    @<span class="hljs-keyword">endif</span><br>                                &lt;/div&gt;<br>                            &lt;/div&gt;<br><br>                            &lt;div class=&quot;form-group&quot;&gt;<br>                                &lt;div class=&quot;col-md-8 col-md-offset-4&quot;&gt;<br>                                    &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;<br>                                        Login<br>                                    &lt;/button&gt;<br>                                &lt;/div&gt;<br>                            &lt;/div&gt;<br>                        &lt;/form&gt;<br>                    &lt;/div&gt;<br>                &lt;/div&gt;<br>            &lt;/div&gt;<br>        &lt;/div&gt;<br>    &lt;/div&gt;<br>@endsection<br></code></pre></td></tr></table></figure>
+<ul>
+<li>数据填充</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">php artisan make:seed AdminsTableSeeder<br></code></pre></td></tr></table></figure>
+<p>编辑 AdminsTableSeeder.php :</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span>&#123;<br>    \App\Admin::insert([<br>        <span class="hljs-string">&#x27;name&#x27;</span>=&gt;<span class="hljs-string">&#x27;admin&#x27;</span>,<br>        <span class="hljs-string">&#x27;password&#x27;</span>=&gt; bcrypt(<span class="hljs-string">&#x27;123456&#x27;</span>)<br>    ]);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>编辑 DatabaseSeeder.php :</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">$this</span>-&gt;call(AdminsTableSeeder::class);<br></code></pre></td></tr></table></figure>
+<p>执行命令</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">php artisan migrate<br>php artisan db:seed<br></code></pre></td></tr></table></figure>
+<ul>
+<li>解决admin未登录时直接访问 <code>/home</code> 页面不会自动跳转到登录页面的问题： 编辑 app/Exceptions/Handle.php 文件:</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">Route</span>;<br><br>...<br><br><span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unauthenticated</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, AuthenticationException <span class="hljs-variable">$exception</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> starts_with(Route::currentRouteName(), <span class="hljs-string">&#x27;admin&#x27;</span>)<br>        ? redirect(route(<span class="hljs-string">&#x27;admin.login.show&#x27;</span>))<br>        : <span class="hljs-built_in">parent</span>::unauthenticated(<span class="hljs-variable">$request</span>, <span class="hljs-variable">$exception</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>解决admin登录时访问登录页面不会自动跳转到</li>
+</ul>
+  <figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">/<span class="hljs-built_in">home</span><br></code></pre></td></tr></table></figure>
+<p>  页面： 新建并编辑中间件：</p>
+  <figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">php artisan make:middleware RedirectIfAdminAuthenticated<br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Middleware</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Closure</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">Auth</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedirectIfAdminAuthenticated</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-built_in">Closure</span> <span class="hljs-variable">$next</span>, <span class="hljs-variable">$guard</span> = <span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (Auth::guard(<span class="hljs-variable">$guard</span>)-&gt;check()) &#123;<br>            <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">&#x27;/admin&#x27;</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$next</span>(<span class="hljs-variable">$request</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>修改app/Http/Kernel.php:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">protected</span> <span class="hljs-variable">$routeMiddleware</span> = [<br>    ...<br>    <span class="hljs-string">&#x27;admin.guest&#x27;</span> =&gt; \App\Http\Middleware\RedirectIfAdminAuthenticated::class,<br>    ...<br>];<br></code></pre></td></tr></table></figure>
+<p>修改路由, 将 <code>guest:admin</code> 改为 <code>admin.guest:admin</code> ：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">Route::get(<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;Admin\Auth\LoginController@showLoginForm&#x27;</span>)<br>    -&gt;middleware(<span class="hljs-string">&#x27;admin.guest:admin&#x27;</span>)<br>    -&gt;name(<span class="hljs-string">&#x27;admin.login.show&#x27;</span>);<br>Route::post(<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;Admin\Auth\LoginController@postLogin&#x27;</span>)<br>    -&gt;middleware(<span class="hljs-string">&#x27;admin.guest:admin&#x27;</span>)<br>    -&gt;name(<span class="hljs-string">&#x27;admin.login.post&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>ok! 完成~~~ 🌤 ☁ 🌈</p>
+</blockquote>
+
+    </div>
+</div>
+<style>
+    #noneimg img {
+        display: none;
+        z-index: 109;
+        width: 600px !important;
+        border-radius: 0px;
+        position: fixed;
+        box-shadow: 0 0 0px #c3c3c300 !important;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto !important;
+    }
+
+    @media screen and (max-width:600px) {
+        #noneimg img {
+            width: 88%
+        }
+    }
+</style>
+<script>
+    $(function () { $('#article').click(function (e) { if (e.target.tagName == "IMG") { if ($('#nonediv').length == 0) { let MImg = `<div id='noneimg'><img src='${e.target.currentSrc}'></div>`; let MDiv = "<div id='nonediv' style='cursor: pointer;display: none; position: fixed;left: 0;top: 0; right: 0;bottom: 0;background-color: #333;opacity:0.5;z-index: 108;'></div>"; $('#article').append(MDiv); $('#article').append(MImg); $("#nonediv").fadeIn("slow"); $("#noneimg img").fadeIn("slow") } } else { if ($('#nonediv').length !== 0) { $("#noneimg ").fadeOut("slow"); $("#nonediv").fadeOut("slow"); setTimeout(function () { $('#nonediv').remove(); $('#noneimg').remove() }, 500) } } }); $('.article-content').addClass('content-move') });
+</script>
+<div class="Last-Next">
+    
+    <a href="/2021/01/21/upload-pictures-on-wechat-official-account/">
+        <div class="last">
+            <span>上一篇</span>
+            <p>✉微信公众号上传图片</p>
+        </div>
+    </a>
+    
+
+    
+    <a href="/2021/01/21/how-to-use-git/">
+        <div class="next">
+            <span>下一篇</span>
+            <p>How to use git</p>
+        </div>
+    </a>
+    
+</div>
+		
+<link rel="stylesheet" href="/css/food.css">
+
+<div class="footer">
+	<div class="Copyright">
+		©2021 By gargamel. 主题：<a
+			style="text-decoration: none;display: contents; color: #898F9F;"
+			target="_blank" rel="noopener" href="https://github.com/qiaobug/hexo-theme-quiet">Quiet</a>
+	</div>
+	<div class="contact">
+		
+		<a target="_blank" rel="noopener" href="https://github.com/gegewv">
+			<img src="https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png" alt="Quiet主题">
+		</a>
+		
+	</div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+
+
+<script src="/js/gotop.js"></script>
+
+
+<style type="text/css">
+    @media screen and (min-width: 600px) {
+        .goTop>span {
+            display: block;
+            border-radius: 50%;
+            width: 66px;
+            height: 66px;
+            cursor: pointer;
+            opacity: 0.8;
+            background: rgba(18, 24, 58, 0.06);
+            text-align: center;
+            border: 1px solid rgba(18, 24, 58, 0.06);
+
+            transition: border .5s;
+            -moz-transition: border .5s;
+            /* Firefox 4 */
+            -webkit-transition: border .5s;
+            /* Safari 和 Chrome */
+            -o-transition: border .5s;
+            /* Opera */
+        }
+
+        .goTop>span:hover {
+            border: 1px solid #6680B3;
+        }
+
+
+        .goTop {
+            position: fixed;
+            right: 30px;
+            bottom: 80px;
+        }
+
+        .goTop>span>svg {
+            width: 30px;
+            height: 30px;
+            margin-top: 17.5px;
+            opacity: 0.7;
+        }
+
+    }
+
+    @media screen and (max-width: 600px) {
+        .goTop {
+            display: none;
+        }
+    }
+</style>
+<div class="goTop" id="js-go_top">
+    <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <g>
+                <path d="M13 12v8h-2v-8H4l8-8 8 8z"></path>
+            </g>
+        </svg>
+    </span>
+</div>
+<script>
+    $('#js-go_top').gotoTop({ offset: 500, speed: 300, animationShow: { 'transform': 'translate(0,0)', 'transition': 'transform .5s ease-in-out' }, animationHide: { 'transform': 'translate(100px,0)', 'transition': 'transform .5s ease-in-out' } });
+</script>
+<script>
+	console.log('\n %c Hexo-Quiet 主题 %c https://github.com/QiaoBug/hexo-theme-quiet \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+</script>
+	</body>
+
+</html>

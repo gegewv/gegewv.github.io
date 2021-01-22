@@ -280,7 +280,7 @@
 </li>
 <li><p>点击 <code>开发者中心</code> ==&gt; <code>研发服务</code> ==&gt; <code>沙箱环境</code> ==&gt; <code>沙箱应用</code> ==&gt; <code>设置RSA2密钥</code> –&gt; <code>填写上一步生成的应用公钥</code> –&gt; <code>验证公钥的正确性</code>，按照指示下载工具，按照要求验证即可（熟练配置过程后一般不会出现错误，可以忽略这一步）</p>
 </li>
-<li><p>修改SDK中的 <code>config.php</code><br><code>app_id</code> 沙箱的 <code>APPID</code><br><code>merchant_private_key</code> 第4步生成的 <code>应用私钥</code><br><code>gatewayUrl</code> 沙箱的支付宝网关 <code>https://openapi.alipaydev.com/gateway.do</code><br><code>alipay_public_key</code> 第5步设置应用公钥后生成的 <code>支付宝公钥</code><br><code>notify_url</code> 改成相应的路径<br><code>return_url</code> 改成相应的路径</p>
+<li><p>修改SDK中的 <code>config.php</code> ：<br><code>app_id</code> 沙箱的 <code>APPID</code><br><code>merchant_private_key</code> 第4步生成的 <code>应用私钥</code><br><code>gatewayUrl</code> 沙箱的支付宝网关 <code>https://openapi.alipaydev.com/gateway.do</code><br><code>alipay_public_key</code> 第5步设置应用公钥后生成的 <code>支付宝公钥</code><br><code>notify_url</code> 改成相应的路径<br><code>return_url</code> 改成相应的路径</p>
 </li>
 <li><p>查看运行环境，开启PHP扩展 <code>php_openssl</code></p>
 </li>
@@ -317,6 +317,13 @@
     $(function () { $('#article').click(function (e) { if (e.target.tagName == "IMG") { if ($('#nonediv').length == 0) { let MImg = `<div id='noneimg'><img src='${e.target.currentSrc}'></div>`; let MDiv = "<div id='nonediv' style='cursor: pointer;display: none; position: fixed;left: 0;top: 0; right: 0;bottom: 0;background-color: #333;opacity:0.5;z-index: 108;'></div>"; $('#article').append(MDiv); $('#article').append(MImg); $("#nonediv").fadeIn("slow"); $("#noneimg img").fadeIn("slow") } } else { if ($('#nonediv').length !== 0) { $("#noneimg ").fadeOut("slow"); $("#nonediv").fadeOut("slow"); setTimeout(function () { $('#nonediv').remove(); $('#noneimg').remove() }, 500) } } }); $('.article-content').addClass('content-move') });
 </script>
 <div class="Last-Next">
+    
+    <a href="/2021/01/22/linux-view-port-occupancy/">
+        <div class="last">
+            <span>上一篇</span>
+            <p>🎆Linux查看端口占用情况,并强制释放占用的端口</p>
+        </div>
+    </a>
     
 
     
