@@ -3,7 +3,7 @@
 
 	<head>
 		
-<title>🌈神奇的ScrollReveal.js-格格巫</title>
+<title>🚋滑动加载更多-格格巫</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -11,7 +11,7 @@
 
 
 <meta name="keywords" content="html,js,">
-<meta name="description" content="神奇的ScrollReveal.js">
+<meta name="description" content="滑动加载更多">
 
 
 <script src="/js/jquery.min.js"></script>
@@ -251,7 +251,7 @@
             
             
         </ul>
-        <h1>🌈神奇的ScrollReveal.js</h1>
+        <h1>🚋滑动加载更多</h1>
         <div class="article-info">
             <div class="article-author">
                 
@@ -264,22 +264,18 @@
                 </svg>
                 
                 <span> <a href="">gargamel</a></span>
-                <p>2021-01-21 17:31:33</p>
+                <p>2021-01-21 17:37:12</p>
             </div>
         </div>
     </div>
 </div>
 <div class="article-content">
     <div id="article" class="content">
-        <h1 id="🌈神奇的ScrollReveal-js"><a href="#🌈神奇的ScrollReveal-js" class="headerlink" title="🌈神奇的ScrollReveal.js"></a>🌈神奇的ScrollReveal.js</h1><blockquote>
-<p>ScrollReveal is a JavaScript library for easily animating elements as they enter/leave the viewport.</p>
+        <h1 id="🚋滑动加载更多"><a href="#🚋滑动加载更多" class="headerlink" title="🚋滑动加载更多"></a>🚋滑动加载更多</h1><blockquote>
+<p>写了个滑动加载更多的效果，然后就感觉前端真的很神奇，可惜好像并不适合我。😅😅😅</p>
+<p>小白上路，大神勿喷</p>
 </blockquote>
-<blockquote>
-<p>ScrollReveal是一个JavaScript库，用于在元素进入/离开视口时轻松对其进行动画处理。</p>
-</blockquote>
-<p>快去<a target="_blank" rel="noopener" href="https://scrollrevealjs.org/">💻官网</a>看下吧<a target="_blank" rel="noopener" href="https://github.com/jlmakes/scrollreveal">⭐️Star</a> (个人觉得首页也挺好看的😃)</p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://unpkg.com/scrollreveal&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;headline&quot;</span>&gt;</span><br>            Hello World🌎<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><br><span class="javascript">            ScrollReveal().reveal(<span class="hljs-string">&#x27;.headline&#x27;</span>);</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> flag=<span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">var</span> page=<span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">var</span> allPage = &#123;总页数&#125;;<br><br>    <span class="hljs-comment">// 滚动事件</span><br>    $(<span class="hljs-built_in">window</span>).bind(<span class="hljs-string">&quot;scroll&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">if</span>(getScrollHeight() == getDocumentTop() + getWindowHeight())&#123;<br>            <span class="hljs-comment">//当滚动条到底时,这里是触发内容</span><br>            <span class="hljs-comment">//异步请求数据,局部刷新dom</span><br>            <span class="hljs-keyword">if</span> (flag) &#123;<br>                showAjax(page);<br>            &#125;<br>        &#125;<br>    &#125;);<br><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showAjax</span>(<span class="hljs-params">currentIndex</span>) </span>&#123;<br>        $.ajax(&#123;<br>            url: <span class="hljs-string">&quot;(url 提交地址)&quot;</span>,<br>            type: <span class="hljs-string">&quot;GET&quot;</span>,<br>            data: &#123;<br>              <span class="hljs-string">&#x27;page&#x27;</span>: currentIndex,<br>            &#125;,<br>            dataType: <span class="hljs-string">&#x27;json&#x27;</span>,<br>            success: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>&#123;<br>                <span class="hljs-comment">//要执行的内容</span><br>                <span class="hljs-keyword">if</span> (currentIndex &gt;= allPage) &#123; <span class="hljs-comment">//当前页码大于等于总页码</span><br>                    flag = <span class="hljs-literal">false</span>;<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    showContent(data);<br>                    page = page + <span class="hljs-number">1</span>;    <span class="hljs-comment">//页数加1</span><br>                &#125;<br>            &#125;<br>        &#125;)<br>    &#125;<br><br>    <span class="hljs-comment">// 拼接字符串</span><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showContent</span>(<span class="hljs-params">dataContent</span>) </span>&#123;<br>        <span class="hljs-keyword">var</span> str = <span class="hljs-string">&#x27;&#x27;</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; dataContent.result.length; i++) &#123;<br>            str += <span class="hljs-string">&quot;You can add some html string&quot;</span>;<br>        &#125;<br>        $(<span class="hljs-string">&#x27;容器&#x27;</span>).append(str);<br>    &#125;<br><br>    <span class="hljs-comment">// 文档高度</span><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDocumentTop</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">var</span> scrollTop = <span class="hljs-number">0</span>, bodyScrollTop = <span class="hljs-number">0</span>, documentScrollTop = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.body) &#123;<br>            bodyScrollTop = <span class="hljs-built_in">document</span>.body.scrollTop;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.documentElement) &#123;<br>            documentScrollTop = <span class="hljs-built_in">document</span>.documentElement.scrollTop;<br>        &#125;<br>        scrollTop = (bodyScrollTop - documentScrollTop &gt; <span class="hljs-number">0</span>) ? bodyScrollTop : documentScrollTop;    <br>        <span class="hljs-keyword">return</span> scrollTop;<br>    &#125;<br><br>    <span class="hljs-comment">// 可视窗口高度</span><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getWindowHeight</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">var</span> windowHeight = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.compatMode == <span class="hljs-string">&quot;CSS1Compat&quot;</span>) &#123;<br>            windowHeight = <span class="hljs-built_in">document</span>.documentElement.clientHeight;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            windowHeight = <span class="hljs-built_in">document</span>.body.clientHeight;<br>        &#125;<br>        <span class="hljs-keyword">return</span> windowHeight;<br>    &#125;<br><br>    <span class="hljs-comment">// 滚动条滚动高度</span><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getScrollHeight</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">var</span> scrollHeight = <span class="hljs-number">0</span>, bodyScrollHeight = <span class="hljs-number">0</span>, documentScrollHeight = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.body) &#123;<br>            bodyScrollHeight = <span class="hljs-built_in">document</span>.body.scrollHeight;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.documentElement) &#123;<br>            documentScrollHeight = <span class="hljs-built_in">document</span>.documentElement.scrollHeight;<br>        &#125;<br>        scrollHeight = (bodyScrollHeight - documentScrollHeight &gt; <span class="hljs-number">0</span>) ? bodyScrollHeight : documentScrollHeight;     <br>        <span class="hljs-keyword">return</span> scrollHeight;<br>    &#125;<br></code></pre></td></tr></table></figure>
     </div>
 </div>
 <style>
@@ -308,19 +304,12 @@
 </script>
 <div class="Last-Next">
     
-    <a href="/2021/01/21/swipe-to-load-more/">
-        <div class="last">
-            <span>上一篇</span>
-            <p>🚋滑动加载更多</p>
-        </div>
-    </a>
-    
 
     
-    <a href="/2021/01/21/upload-pictures-on-wechat-official-account/">
+    <a href="/2021/01/21/magic-scrollreveal/">
         <div class="next">
             <span>下一篇</span>
-            <p>✉微信公众号上传图片</p>
+            <p>🌈神奇的ScrollReveal.js</p>
         </div>
     </a>
     
